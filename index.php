@@ -3,16 +3,16 @@
 <script src="js/treetable.js"></script>
 
 <?php
-    $recursiveDepth = 5;
-    $childrenPerParent = 8;
+    $recursiveDepth = 4;
+    $childrenPerParent = 5;
     $items = 0;
 
     $treeHierarchical = recursivelyCreateHierarchicalTree($recursiveDepth, $childrenPerParent);
 
     echo "<div>There are ".$items." items in the tree.</div>";
-
     echo "<div class='js-treetable treetable'>";
-    echo "<a class='js-expand-collapse js-collapse'>Collapse All</a>";
+    echo "<div><a class='js-reveal-random-node' data-max-items='".$items."'>Reveal some random node</a></div>";
+    echo "<div><a class='js-expand-collapse js-collapse'>Collapse All</a></div>";
     emitTree($treeHierarchical, 0);
     echo "</div>";
 
