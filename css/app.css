@@ -1,29 +1,32 @@
-/* line 2, ../sass/app.sass */
+/* line 1, ../sass/app.sass */
+.treetable {
+  padding-top: 20px;
+}
+/* line 4, ../sass/app.sass */
 .treetable a {
   cursor: pointer;
 }
-/* line 5, ../sass/app.sass */
+/* line 7, ../sass/app.sass */
 .treetable .tree-branch.root {
   padding-left: 0;
-  margin: 0;
 }
-/* line 8, ../sass/app.sass */
+/* line 9, ../sass/app.sass */
 .treetable .tree-node {
   list-style-type: none;
   background: none;
 }
-/* line 9, ../sass/app.sass */
+/* line 10, ../sass/app.sass */
 .treetable .tree-node.root {
   padding: 0;
 }
-/* line 13, ../sass/app.sass */
+/* line 14, ../sass/app.sass */
 .treetable .tree-node .checkbox {
   margin-top: 0;
   margin-right: 3px;
   margin-bottom: 0;
   margin-left: 0;
 }
-/* line 19, ../sass/app.sass */
+/* line 20, ../sass/app.sass */
 .treetable .toggle-expand {
   font-size: 12px;
   opacity: 0.8;
@@ -31,7 +34,7 @@
   color: black;
   text-decoration: none;
 }
-/* line 25, ../sass/app.sass */
+/* line 26, ../sass/app.sass */
 .treetable .children-are-invisible ul {
   display: none;
 }
