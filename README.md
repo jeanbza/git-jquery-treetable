@@ -8,33 +8,20 @@ A fast, extremely lightweight example of how to create an interactive treetable 
 This code expects your data to be hierarchical, e.g.:
 
 ```
-Array
-(
+Array (
     [id] => 3
     [text] => Rock
-    [children] => Array
-        (
-            [0] => Array
-                (
+    [children] => Array (
+            [0] => Array (
                     [id] => 1
                     [text] => Paper
-                    [children] => Array
-                        (
-                        )
-
+                    [children] => Array()
                 )
-
-            [1] => Array
-                (
+            [1] => Array (
                     [id] => 2
                     [text] => Paper
-                    [children] => Array
-                        (
-                        )
-
+                    [children] => Array()
                 )
-
         )
-
 )
 ```
