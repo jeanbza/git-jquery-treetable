@@ -3,7 +3,7 @@ git-web-treetable
 
 A fast, extremely lightweight example of how to create an interactive treetable with expand/collapse, expand/collapse all, cascade checking, and bubble checking functionalies.
 
-### How does the data look before turning it into a tree?
+### How should I format my data to turn into a tree?
 This code expects your data to be hierarchical, e.g.:
 
 ```
