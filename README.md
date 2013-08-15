@@ -1,7 +1,7 @@
 git-jquery-treetable
 =================
 
-As fast, extremely lightweight example of how to create an interactive treetable with expand/collapse, expand/collapse all, cascade checking, and bubble checking functionalies.
+A fast, extremely lightweight example of how to create an interactive treetable with expand/collapse, expand/collapse all, cascade checking, and bubble checking functionalies.
 
 ### How should I format my data to turn into a tree?
 This code expects your data to be hierarchical, e.g.:
