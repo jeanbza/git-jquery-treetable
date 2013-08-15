@@ -90,7 +90,17 @@
 </html>
 
 <script type="text/x-handlebars">
+    Summarized:
+    <br>
     {{#each item in Webapp.CheckedFilters}}
-       {{item.id}}: {{item.description}} {{{item.summaryNode}}}<br>
+        {{#if item.summaryNode}}
+            {{item.id}}: {{item.description}}<br>
+        {{/if}}
+    {{/each}}
+    <br>
+    Raw:
+    <br>
+    {{#each item in Webapp.CheckedFilters}}
+       {{item.id}}: {{item.description}}<br>
     {{/each}}
 </script>
