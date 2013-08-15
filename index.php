@@ -16,7 +16,7 @@
     </head>
     <body>
         <?php
-            $recursiveDepth = 2;
+            $recursiveDepth = 3;
             $childrenPerParent = 2;
             $items = 0;
 
@@ -92,7 +92,7 @@
 <script type="text/x-handlebars">
     Summarized:
     <br>
-    {{#each item in Webapp.CheckedFilters}}
+    {{#each item in Webapp.CheckedItems}}
         {{#if item.summaryNode}}
             {{item.id}}: {{item.description}}<br>
         {{/if}}
@@ -100,7 +100,7 @@
     <br>
     Raw:
     <br>
-    {{#each item in Webapp.CheckedFilters}}
+    {{#each item in Webapp.CheckedItems}}
        {{item.id}}: {{item.description}}<br>
     {{/each}}
 </script>

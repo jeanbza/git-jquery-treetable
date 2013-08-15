@@ -4,7 +4,7 @@ window.Webapp = Ember.Application.create();
 
 // MODEL
 
-Webapp.CheckedFilters = [];
+Webapp.CheckedItems = [];
 
 // CONTROLLER
 

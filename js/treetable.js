@@ -31,7 +31,7 @@ function refreshTreeBindings() {
 
 function resetTreeChecks() {
     $(".js-treetable input:checkbox").prop('checked', false);
-    Webapp.CheckedFilters.clear();
+    Webapp.CheckedItems.clear();
 }
 
 function expandAllTreeNodes() {
@@ -55,57 +55,57 @@ function expandAndCheckTreeNode(id) {
 }
 
 function cascadeChecks(checkbox, val) {
-    checkbox.parent().find("input:checkbox").each(function() {
+    var treeBranch = checkbox.parent();
+
+    $(treeBranch).find("input:checkbox").each(function() {
         $(this).prop('checked', val);
+        
         var treeNode = $(this).parent();
+        var myObject = Webapp.CheckedItems.findProperty('id', $(treeNode).attr('id'));
 
         if(val) {
-            var myObject = Webapp.CheckedFilters.findProperty('id', $(treeNode).attr('id'));
             if(myObject == undefined) {
                 addNode(treeNode);
             }
         } else {
-            var myObject = Webapp.CheckedFilters.findProperty('id', $(treeNode).attr('id'));
-            Webapp.CheckedFilters.removeObject(myObject);
+            var myObject = Webapp.CheckedItems.findProperty('id', $(treeNode).attr('id'));
+            Webapp.CheckedItems.removeObject(myObject);
         }
+    });
+
+    $(treeBranch).find('.js-tree-node').each(function(){
+        var myObject = Webapp.CheckedItems.findProperty('id', $(this).attr('id'));
+        if(myObject != undefined) 
+            Ember.set(myObject, 'summaryNode', !val);
     });
 }
 
 function bubbleChecks(checkbox, val) {
-    checkbox.parents('.js-tree-branch').each(function(){
-        if($(this).children('.js-tree-node').children('.js-tree-branch').length > 0) {
-            var treeNode = $(this).children('.js-tree-node');
-            var allChecked = $(treeNode).children('.js-tree-branch').find("input:checkbox:not(:checked)").length == 0;
-            $(this).children('.js-tree-node').children('input:checkbox').prop('checked', allChecked);
+    checkbox.parents('.js-tree-node').each(function() {
+        var treeNode = $(this);
 
+        // We don't want to check leaves because they will always return all checked
+        if($(treeNode).children('.js-tree-branch').length > 0) {
+            var allChecked = $(treeNode).children('.js-tree-branch').find("input:checkbox:not(:checked)").length == 0;
+        
+            // Check relevant parents
+            $(treeNode).children('input:checkbox').prop('checked', allChecked);
+            $(treeNode).children('.js-tree-branch').children('.js-tree-node').each(function(){
+                var myObject = Webapp.CheckedItems.findProperty('id', $(this).attr('id'));
+                if(myObject != undefined) {
+                    Ember.set(myObject, 'summaryNode', !allChecked);
+                }
+            });
+
+            // Add / remove from CheckedItems
             if(allChecked) {
-                var myObject = Webapp.CheckedFilters.findProperty('id', $(treeNode).attr('id'));
+                var myObject = Webapp.CheckedItems.findProperty('id', $(treeNode).attr('id'));
                 if(myObject == undefined) {
                     addNode(treeNode);
                 }
-
-                if(allChecked) {
-                    // TODO: Remove all children
-                    var children = JSON.parse($(treeNode).attr('data-children'));
-
-                    $(children).each(function(){
-                        var id = parseInt(this).toString();
-                        var myObject = Webapp.CheckedFilters.findProperty('id', id);
-                        Ember.set(myObject, 'summaryNode', false);
-                    });
-                }
             } else {
-                var children = JSON.parse($(treeNode).attr('data-children'));
-                    
-                $(children).each(function(){
-                    var id = parseInt(this).toString();
-                    var myObject = Webapp.CheckedFilters.findProperty('id', id);
-                    if(myObject != undefined)
-                        Ember.set(myObject, 'summaryNode', true);
-                });
-
-                var myObject = Webapp.CheckedFilters.findProperty('id', $(treeNode).attr('id'));
-                Webapp.CheckedFilters.removeObject(myObject);
+                var myObject = Webapp.CheckedItems.findProperty('id', $(treeNode).attr('id'));
+                Webapp.CheckedItems.removeObject(myObject);
             }
         }
     });
@@ -117,5 +117,5 @@ function addNode(treeNode) {
     var parent = $(treeNode).attr('data-parent');
     var children = JSON.parse($(treeNode).attr('data-children'));
 
-    Webapp.CheckedFilters.pushObject({id: id, description: description, children: children, parent: parent, summaryNode: true});
+    Webapp.CheckedItems.pushObject({id: id, description: description, children: children, parent: parent, summaryNode: true});
 }
