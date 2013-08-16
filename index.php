@@ -46,7 +46,7 @@
                     $treeNodeClasses[] = 'root';
                     echo "<li id='".$tree['id']."' class='root js-tree-node tree-node' data-description='".$tree['text']."' data-children='".$childrenFlat."'>";
                 } else {
-                    echo "<li id='".$tree['id']."' class='js-tree-node tree-node' data-description='".$tree['text']."' data-children='".$childrenFlat."' data-parent='".$parent."''>";
+                    echo "<li id='".$tree['id']."' class='js-tree-node tree-node' data-description='".$tree['text']."' data-children='".$childrenFlat."'>";
                 }
 
                 echo "<input class='checkbox' type='checkbox'/>";
