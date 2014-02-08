@@ -1,4 +1,4 @@
-function treeTable() {
+function TreeTable() {
     var treeTableSelf = this;
 
     /**
@@ -119,6 +119,6 @@ function treeTable() {
 }
 
 $(document).ready(function() {
-    var tt = new treeTable();
+    var tt = new TreeTable();
     tt.refreshTreeBindings();
 });
