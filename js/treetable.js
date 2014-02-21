@@ -2,27 +2,27 @@ function TreeTable(options) {
     var treeTableSelf = this;
 
     this.defaultOptions = {
-        elemClasses: {
-            js: {
-                root: "js-treetable",
-                node: "js-tree-node",
-                branch: "js-tree-branch",
-                toggleExpand: "js-toggle-expand",
-                expanderCollapser: "js-expand-collapse"
-            },
-            css: {
-                hiddenChildren: "children-are-invisible"
-            }
-        }
+        root: "js-treetable",
+        node: "js-tree-node",
+        branch: "js-tree-branch",
+        toggleExpand: "js-toggle-expand",
+        expanderCollapser: "js-expand-collapse",
+        hiddenChildren: "children-are-invisible"
     }
 
     this.options = {};
 
     this._init = function() {
-        treeTableSelf.options = options ? options : treeTableSelf.defaultOptions;
-    }
+        for (var optionName in treeTableSelf.defaultOptions) {
+            if (!options[optionName]) {
+                treeTableSelf.options[optionName] = treeTableSelf.defaultOptions[optionName];
+            } else {
+                treeTableSelf.options[optionName] = options[optionName];
+            }
+        }
 
-    this._init();
+        treeTableSelf.refreshTreeBindings();
+    }
 
     /**
      * This function refreshes the bindings on the tree
@@ -36,7 +36,7 @@ function TreeTable(options) {
         });
 
         // Expand / Collapse All
-        $("." + treeTableSelf.options.elemClasses.js.expanderCollapser).click(function(){
+        $("." + treeTableSelf.options.expanderCollapser).click(function(){
             if($(this).hasClass("js-collapse")) {
                 // Collapse
                 treeTableSelf.collapseAllTreeNodes();
@@ -47,20 +47,20 @@ function TreeTable(options) {
         });
 
         // Cascade and bubble checks
-        $("body").delegate("." + treeTableSelf.options.elemClasses.js.root + " input:checkbox", "change", function() {
+        $("body").delegate("." + treeTableSelf.options.root + " input:checkbox", "change", function() {
             var val = $(this).prop("checked");
             treeTableSelf.cascadeChecks($(this), val);
             treeTableSelf.bubbleChecks($(this), val);
         });
 
         // Toggle Expand/Collapse
-        $("body").delegate("." + treeTableSelf.options.elemClasses.js.toggleExpand, "click", function(){
-            if($(this).parent().hasClass(treeTableSelf.options.elemClasses.css.hiddenChildren)) {
+        $("body").delegate("." + treeTableSelf.options.toggleExpand, "click", function(){
+            if($(this).parent().hasClass(treeTableSelf.options.hiddenChildren)) {
                 $(this).html("&#x25BC;");
-                $(this).parent().removeClass(treeTableSelf.options.elemClasses.css.hiddenChildren);
+                $(this).parent().removeClass(treeTableSelf.options.hiddenChildren);
             } else {
                 $(this).html("&#x25B6;");
-                $(this).parent().addClass(treeTableSelf.options.elemClasses.css.hiddenChildren);
+                $(this).parent().addClass(treeTableSelf.options.hiddenChildren);
             }
         });
     }
@@ -75,7 +75,7 @@ function TreeTable(options) {
      * @return void
      */
     this.resetTreeChecks = function() {
-        $("." + treeTableSelf.options.elemClasses.js.root + " input:checkbox").prop("checked", false);
+        $("." + treeTableSelf.options.root + " input:checkbox").prop("checked", false);
     }
 
     /**
@@ -83,10 +83,10 @@ function TreeTable(options) {
      * @return void
      */
     this.expandAllTreeNodes = function() {
-        $("." + treeTableSelf.options.elemClasses.js.expanderCollapser).text("Collapse All");
-        $("." + treeTableSelf.options.elemClasses.js.node).removeClass(treeTableSelf.options.elemClasses.css.hiddenChildren);
-        $("." + treeTableSelf.options.elemClasses.js.toggleExpand).html("&#x25BC;");
-        $("." + treeTableSelf.options.elemClasses.js.expanderCollapser).removeClass("js-collapse").removeClass("js-expand").addClass("js-collapse");
+        $("." + treeTableSelf.options.expanderCollapser).text("Collapse All");
+        $("." + treeTableSelf.options.node).removeClass(treeTableSelf.options.hiddenChildren);
+        $("." + treeTableSelf.options.toggleExpand).html("&#x25BC;");
+        $("." + treeTableSelf.options.expanderCollapser).removeClass("js-collapse").removeClass("js-expand").addClass("js-collapse");
     }
 
     /**
@@ -94,10 +94,10 @@ function TreeTable(options) {
      * @return void
      */
     this.collapseAllTreeNodes = function() {
-        $("." + treeTableSelf.options.elemClasses.js.expanderCollapser).text("Expand All");
-        $("." + treeTableSelf.options.elemClasses.js.node).addClass(treeTableSelf.options.elemClasses.css.hiddenChildren);
-        $("." + treeTableSelf.options.elemClasses.js.toggleExpand).html("&#x25B6;");
-        $("." + treeTableSelf.options.elemClasses.js.expanderCollapser).removeClass("js-collapse").removeClass("js-expand").addClass("js-expand");
+        $("." + treeTableSelf.options.expanderCollapser).text("Expand All");
+        $("." + treeTableSelf.options.node).addClass(treeTableSelf.options.hiddenChildren);
+        $("." + treeTableSelf.options.toggleExpand).html("&#x25B6;");
+        $("." + treeTableSelf.options.expanderCollapser).removeClass("js-collapse").removeClass("js-expand").addClass("js-expand");
     }
 
     /**
@@ -108,9 +108,9 @@ function TreeTable(options) {
     this.expandAndCheckTreeNode = function(id) {
         treeTableSelf.collapseAllTreeNodes();
         treeTableSelf.resetTreeChecks();  // Turn this off to expand+reveal multiple items at once, e.g. revealing a previously set list of items
-        $("." + treeTableSelf.options.elemClasses.js.node + "#" + id).parents("." + treeTableSelf.options.elemClasses.js.node).removeClass(treeTableSelf.options.elemClasses.css.hiddenChildren).children("." + treeTableSelf.options.elemClasses.js.toggleExpand).html("&#x25BC;");
-        treeTableSelf.cascadeChecks($("." + treeTableSelf.options.elemClasses.js.node + "#" + id).children("input:checkbox"), true);
-        treeTableSelf.bubbleChecks($("." + treeTableSelf.options.elemClasses.js.node + "#" + id).children("input:checkbox"), true);
+        $("." + treeTableSelf.options.node + "#" + id).parents("." + treeTableSelf.options.node).removeClass(treeTableSelf.options.hiddenChildren).children("." + treeTableSelf.options.toggleExpand).html("&#x25BC;");
+        treeTableSelf.cascadeChecks($("." + treeTableSelf.options.node + "#" + id).children("input:checkbox"), true);
+        treeTableSelf.bubbleChecks($("." + treeTableSelf.options.node + "#" + id).children("input:checkbox"), true);
     }
 
     /**
@@ -132,16 +132,11 @@ function TreeTable(options) {
      * @return void
      */
     this.bubbleChecks = function(checkbox, val) {
-        checkbox.parents("." + treeTableSelf.options.elemClasses.js.branch).each(function(){
-            if($(this).children("." + treeTableSelf.options.elemClasses.js.node).children("." + treeTableSelf.options.elemClasses.js.branch).length > 0) {
-                var allChecked = $(this).children("." + treeTableSelf.options.elemClasses.js.node).children("." + treeTableSelf.options.elemClasses.js.branch).find("input:checkbox:not(:checked)").length == 0;
-                $(this).children("." + treeTableSelf.options.elemClasses.js.node).children("input:checkbox").prop("checked", allChecked);
+        checkbox.parents("." + treeTableSelf.options.branch).each(function(){
+            if($(this).children("." + treeTableSelf.options.node).children("." + treeTableSelf.options.branch).length > 0) {
+                var allChecked = $(this).children("." + treeTableSelf.options.node).children("." + treeTableSelf.options.branch).find("input:checkbox:not(:checked)").length == 0;
+                $(this).children("." + treeTableSelf.options.node).children("input:checkbox").prop("checked", allChecked);
             }
         });
     }
 }
-
-$(document).ready(function() {
-    var tt = new TreeTable();
-    tt.refreshTreeBindings();
-});

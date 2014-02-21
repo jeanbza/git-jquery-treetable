@@ -69,3 +69,13 @@
         return array('id' => $items, 'text' => getRandomWord(), 'children' => $children);
     }
 ?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    var tt = new TreeTable({
+        root: "js-treetable"
+    });
+
+    tt._init();
+});
+</script>
